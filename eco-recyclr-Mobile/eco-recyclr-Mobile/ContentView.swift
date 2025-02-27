@@ -4,7 +4,6 @@
 //
 //  Created by Jolomi Mebaghanje on 2/26/25.
 //
-
 import SwiftUI
 import PhotosUI
 
@@ -13,28 +12,30 @@ struct ContentView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var selectedImage: UIImage? = nil
     @State private var resultText: String = ""
-    
+
+    let backendURL = "http://127.0.0.1:5001/predict"
+
     var body: some View {
         ZStack {
             // Background gradient for aesthetics
             LinearGradient(gradient: Gradient(colors: [Color.green.opacity(0.4), Color.blue.opacity(0.3)]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
-            
+
             VStack(spacing: 20) {
-                // App title with a leaf icon
+                // App title with a leaf iconn
                 HStack {
                     Text("EcoRecyclr")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .shadow(radius: 5)
-                    
+
                     Image(systemName: "leaf.fill")
                         .foregroundColor(.green)
                         .font(.title)
                 }
                 .padding()
-                
+
                 // Image display and removal button
                 ZStack(alignment: .topTrailing) {
                     if let image = selectedImage {
@@ -54,7 +55,7 @@ struct ContentView: View {
                                     .foregroundColor(.white)
                             )
                     }
-                    
+
                     if selectedImage != nil {
                         Button(action: {
                             selectedImage = nil
@@ -66,7 +67,7 @@ struct ContentView: View {
                         .offset(x: -10, y: 10)
                     }
                 }
-                
+
                 // Button for choosing an image
                 PhotosPicker("Choose Photo", selection: $selectedItem, matching: .images)
                     .buttonStyle(.borderedProminent)
@@ -79,7 +80,7 @@ struct ContentView: View {
                             }
                         }
                     }
-                
+
                 // Button to classify the selected image
                 Button(action: classifyImage) {
                     Text("Check Recyclability")
@@ -92,8 +93,8 @@ struct ContentView: View {
                         .shadow(radius: 5)
                 }
                 .padding()
-                
-                // Display classification resultt
+
+                // Display classification result
                 Text(resultText)
                     .font(.title2)
                     .foregroundColor(.white)
@@ -103,18 +104,55 @@ struct ContentView: View {
             .padding()
         }
     }
-    
-    // Function to classify an image
+
+    // Function to send the image to the backend and get the response
     func classifyImage() {
-        guard selectedImage != nil else {
+        guard let selectedImage = selectedImage else {
             resultText = "Please select an image first."
             return
         }
-        
+
         resultText = "Processing..."
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            let sampleResults = ["Recyclable", "Not Recyclable"]
-            resultText = sampleResults.randomElement() ?? "Error"
+
+        guard let imageData = selectedImage.jpegData(compressionQuality: 0.8) else {
+            resultText = "Error processing image."
+            return
         }
+
+        let url = URL(string: backendURL)!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+
+        let task = URLSession.shared.uploadTask(with: request, from: imageData) { data, response, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.resultText = "Error: \(error.localizedDescription)"
+                }
+                return
+            }
+
+            if let data = data {
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                       let label = jsonResponse["label"] as? String,
+                       let recyclable = jsonResponse["recyclable"] as? String {
+                        DispatchQueue.main.async {
+                            self.resultText = "Item: \(label)\nRecyclable: \(recyclable)"
+                        }
+                    } else {
+                        DispatchQueue.main.async {
+                            self.resultText = "Invalid response."
+                        }
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        self.resultText = "Error decoding response."
+                    }
+                }
+            }
+        }
+        task.resume()
     }
 }
+
