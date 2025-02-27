@@ -22,7 +22,7 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 20) {
-                // App title with a leaf icon
+                // App title with a leaf iconn
                 HStack {
                     Text("EcoRecyclr")
                         .font(.largeTitle)
