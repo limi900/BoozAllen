@@ -93,7 +93,7 @@ struct ContentView: View {
                 }
                 .padding()
                 
-                // Display classification result
+                // Display classification resultt
                 Text(resultText)
                     .font(.title2)
                     .foregroundColor(.white)
