@@ -104,7 +104,7 @@ struct ContentView: View {
         }
     }
     
-    // Function to classify an image (placeholder logic)
+    // Function to classify an image
     func classifyImage() {
         guard selectedImage != nil else {
             resultText = "Please select an image first."
