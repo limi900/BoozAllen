@@ -22,7 +22,7 @@ EcoRecyclr is an ML-powered application designed to help users determine whether
 - **SwiftUI (iOS)**
 
 ### Web App
-- **Node.js, Express.js**
+- **Node.js**
 - **React (Frontend)**
 
 ### Backend
