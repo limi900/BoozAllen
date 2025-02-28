@@ -4,6 +4,10 @@ from torchvision import transforms
 from PIL import Image
 import io
 import torchvision.models as models
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
 
 app = Flask(__name__)
 
