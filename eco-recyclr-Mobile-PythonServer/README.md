@@ -2,6 +2,8 @@ EcoRecyclr - Image-Based Recyclability Classifier
 
 EcoRecyclr is a mobile application that allows users to upload images of waste materials to determine whether they are recyclable. The app consists of a SwiftUI-based iOS front end and a Flask-based Python backend that uses a ResNet-18 deep learning model to classify waste items.
 
+VideoShowcase.mov contains a video that shows the application running with the model.
+
 Features
 
 Upload an image from the iOS app
