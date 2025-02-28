@@ -34,13 +34,13 @@ export default function Home() {
 
       const data = await response.json();
       if (response.ok) {
-        setMessage(`Upload successful!`);
+        setMessage(`Recyclable: ${data.recyclable} (Catagory: ${data.label})`);
       } else {
-        setMessage(`Upload failed: ${data.error}`);
+        setMessage(`Error: ${data.error}`);
       }
     } catch (error) {
       setMessage("An error occurred while uploading.");
-      console.error("Upload error:", error);
+      console.error("Upload error:", error);  
     }
   };
 
@@ -78,7 +78,7 @@ export default function Home() {
         Upload
       </button>
 
-      {message && <p className="mt-4 text-white">{message}</p>}
+      {message && <p className="mt-4 text-black">{message}</p>}
     </div>
   );
 }
