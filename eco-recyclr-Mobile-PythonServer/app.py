@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 import torch
 from torchvision import transforms
 from PIL import Image
@@ -7,10 +7,18 @@ import torchvision.models as models
 
 app = Flask(__name__)
 
-# Class labels
+#To prevent caching issues, fix to flask issue
+@app.after_request
+def add_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
+#Class labels
 class_names = ['battery', 'biological', 'cardboard', 'clothes', 'glass', 'metal', 'paper', 'plastic', 'shoes', 'trash']
 
-# Load the ResNet model
+#Load the ResNet model
 print("Loading model...")
 model = models.resnet18(weights=None)  # Ensure it's the correct architecture
 model.fc = torch.nn.Linear(model.fc.in_features, len(class_names))  # Adjust based on the number of classes
@@ -76,4 +84,4 @@ def predict():
 if __name__ == '__main__':
     # start the flask server
     print("Starting Flask server...")
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True, use_reloader=False)
