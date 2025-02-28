@@ -7,7 +7,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
