@@ -98,5 +98,5 @@ DataLoaders are created for efficient batch processing during training.
 4. **Training Setup**: The model is trained using cross-entropy loss and the Adam optimizer. The training runs for 10 epochs and utilizes GPU (CUDA) if available.
 
 ## Additional Resources
-- Video demonstrations available in the `eco-recyclr-PythonServer` folder.
+- Video demonstrations available in the `eco-recyclr-PythonServer` folder showing the mobile app and web app working.
 - The `test.py` file demonstrates how to use the trained model for inference.
