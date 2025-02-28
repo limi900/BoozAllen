@@ -8,6 +8,10 @@ export default function Home() {
   const [fileName, setFileName] = useState("");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.error("No file selected.");
+      return;
+    }
     const file = e.target.files[0];
     if (file) {
       setImage(file);
