@@ -2,8 +2,8 @@
 import { useState } from "react";
 
 export default function Home() {
-  const [image, setImage] = useState(null);
-  const [preview, setPreview] = useState(null);
+  const [image, setImage] = useState<File | null>(() => null);
+  const [preview, setPreview] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [fileName, setFileName] = useState("");
 
@@ -14,7 +14,7 @@ export default function Home() {
     }
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
+      setImage(file as File);
       setPreview(URL.createObjectURL(file));
       setFileName(file.name);
     }
@@ -31,7 +31,7 @@ export default function Home() {
 
     try {
       //waiting from the backend api to retrieve the image
-      const response = await fetch("/upload", {
+      const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
