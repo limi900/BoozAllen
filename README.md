@@ -6,7 +6,6 @@
 - Hallel Dereb
 - Oritsejolomisan Mebaghanje
 - Chris Dollo
-- Tolu Telli
 
 ## Project Overview
 EcoRecyclr is an ML-powered application designed to help users determine whether a waste item is recyclable based on an image. The project consists of a mobile app, a web app, and a machine learning model that classifies waste into one of ten categories. Users can upload an image via the mobile or web app, and the system processes it using a deep learning model to determine recyclability.
